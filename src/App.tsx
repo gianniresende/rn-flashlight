@@ -1,24 +1,39 @@
 /* eslint-disable quotes */
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/self-closing-comp */
-import React, {useState} from 'react';
-import {Image, StyleSheet, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+import Torch from 'react-native-torch';
+import RNShake from 'react-native-shake';
 
 const App = () => {
-  const [toggle, setToggle] = useState(true);
+  const [toggle, setToggle] = useState(false);
 
+  useEffect(() => {
+    Torch.switchState(toggle);
+  }, [toggle]);
+
+  useEffect(() => {
+    const subscription = RNShake.addListener(() => {
+      setToggle(old => old);
+    });
+
+    return () => subscription.remove();
+  }, []);
 
   return (
     <View style={styles.Container}>
-      <Image 
-        style={toggle ? styles.LightOff : styles.LightOn} 
-        source={
-          toggle 
-          ? require('./assets/icons/light-off.jpg') 
-          : require('./assets/icons/light-on.jpg')
-        }
-      >
-      </Image>
+      <TouchableOpacity onPress={() => setToggle(old => !old)}>
+        <Image 
+          style={toggle ? styles.LightOff : styles.LightOn} 
+          source={
+            toggle 
+            ? require('./assets/icons/light-off.jpg') 
+            : require('./assets/icons/light-on.jpg')
+          }
+        >
+        </Image>
+      </TouchableOpacity>
     </View>
   );
 };
