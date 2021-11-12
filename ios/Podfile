@@ -12,6 +12,8 @@ target 'rnFlashLight' do
     :hermes_enabled => false
   )
 
+  pod 'react-native-torch', :path => '../node_modules/react-native-torch'
+
   target 'rnFlashLightTests' do
     inherit! :complete
     # Pods for testing
